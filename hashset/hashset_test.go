@@ -1,4 +1,4 @@
-package gollections
+package hashset
 
 import (
 	"reflect"

@@ -1,4 +1,4 @@
-package gollections
+package priorityqueue
 
 import (
 	"reflect"

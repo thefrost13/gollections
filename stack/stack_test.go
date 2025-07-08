@@ -1,4 +1,4 @@
-package gollections
+package stack
 
 import (
 	"reflect"

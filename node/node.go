@@ -1,4 +1,4 @@
-package gollections
+package node
 
 type LinkedNode[T any] struct {
 	Value T

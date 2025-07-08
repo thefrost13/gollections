@@ -1,4 +1,4 @@
-package gollections
+package hashset
 
 type HashSet[T comparable] map[T]bool
 

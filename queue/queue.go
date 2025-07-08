@@ -1,8 +1,10 @@
-package gollections
+package queue
+
+import "github.com/thefrost13/gollections/node"
 
 type Queue[T any] struct {
-	first *LinkedNode[T]
-	last  *LinkedNode[T]
+	first *node.LinkedNode[T]
+	last  *node.LinkedNode[T]
 	size  int
 }
 
@@ -21,7 +23,7 @@ func NewQueue[T any](sli []T) *Queue[T] {
 }
 
 func (q *Queue[T]) Enqueue(value T) {
-	newItem := &LinkedNode[T]{
+	newItem := &node.LinkedNode[T]{
 		Value: value,
 	}
 

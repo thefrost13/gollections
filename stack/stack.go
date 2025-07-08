@@ -1,7 +1,9 @@
-package gollections
+package stack
+
+import "github.com/thefrost13/gollections/node"
 
 type Stack[T any] struct {
-	top  *LinkedNode[T]
+	top  *node.LinkedNode[T]
 	size int
 }
 
@@ -20,7 +22,7 @@ func NewStack[T any](sli []T) *Stack[T] {
 }
 
 func (s *Stack[T]) Push(value T) {
-	newItem := &LinkedNode[T]{
+	newItem := &node.LinkedNode[T]{
 		Value: value,
 	}
 
