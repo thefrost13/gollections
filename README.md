@@ -8,6 +8,7 @@ A generic collections library for Go that provides type-safe data structures usi
 - **Stack**: A LIFO (Last In, First Out) stack implementation using linked list
 - **Queue**: A FIFO (First In, First Out) queue implementation using linked list  
 - **PriorityQueue**: A priority queue implementation using Go's container/heap
+- **OrderedHashMap**: A hash map that maintains insertion order of key-value pairs
 
 ## Installation
 
@@ -145,15 +146,65 @@ func main() {
 }
 ```
 
+### OrderedHashMap
+
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/thefrost13/gollections"
+)
+
+func main() {
+    // Create a new OrderedHashMap
+    ohm := gollections.NewOrderedHashMap[string, int]()
+    
+    // Set key-value pairs (maintains insertion order)
+    ohm.Set("first", 1)
+    ohm.Set("second", 2)
+    ohm.Set("third", 3)
+    
+    // Get values by key
+    value, exists := ohm.Get("second")
+    if exists {
+        fmt.Printf("Value for 'second': %d\n", value)
+    }
+    
+    // Update existing key (maintains original position)
+    ohm.Set("second", 20)
+    
+    // Get all keys in insertion order
+    keys := ohm.Keys()
+    fmt.Printf("Keys in order: %v\n", keys)
+    
+    // Get all values in insertion order
+    values := ohm.Values()
+    fmt.Printf("Values in order: %v\n", values)
+    
+    // Convert to slice of key-value pairs
+    pairs := ohm.ToSlice()
+    fmt.Printf("Key-value pairs: %v\n", pairs)
+    
+    // Delete a key
+    ohm.Delete("second")
+    
+    // Check size
+    fmt.Printf("Size: %d\n", ohm.Size())
+}
+```
+
 ## API Reference
 
 ### Common Methods
 
-All collections implement these common methods:
+Most collections implement these common methods:
 
 - `Size() int` - Returns the number of elements
 - `IsEmpty() bool` - Returns true if the collection is empty
-- `Clear()` - Removes all elements
+
+Some collections also implement:
+- `Clear()` - Removes all elements (HashSet, Stack, Queue, PriorityQueue)
 
 ### HashSet Methods
 
@@ -185,6 +236,16 @@ All collections implement these common methods:
 - `Dequeue() T` - Removes and returns the highest priority element
 - `Peek() T` - Returns the highest priority element without removing it
 - `ToSlice() []T` - Returns a slice containing all elements
+
+### OrderedHashMap Methods
+
+- `NewOrderedHashMap[K comparable, V any]() *OrderedHashMap[K, V]` - Creates a new OrderedHashMap
+- `Set(key K, value V)` - Sets a key-value pair (maintains insertion order)
+- `Get(key K) (V, bool)` - Gets a value by key, returns value and existence flag
+- `Delete(key K)` - Removes a key-value pair from the map
+- `Keys() []K` - Returns all keys in insertion order
+- `Values() []V` - Returns all values in insertion order
+- `ToSlice() []KVPair[K, V]` - Returns all key-value pairs as a slice in insertion order
 
 ## Requirements
 
