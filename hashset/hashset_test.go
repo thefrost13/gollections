@@ -6,11 +6,11 @@ import (
 	"testing"
 )
 
-func TestNewHashSet(t *testing.T) {
+func TestNew(t *testing.T) {
 	t.Run("create empty hashset with nil slice", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		if set == nil {
-			t.Fatal("NewHashSet should not return nil")
+			t.Fatal("New should not return nil")
 		}
 		if set.Size() != 0 {
 			t.Errorf("Expected size 0, got %d", set.Size())
@@ -21,9 +21,9 @@ func TestNewHashSet(t *testing.T) {
 	})
 
 	t.Run("create empty hashset with empty slice", func(t *testing.T) {
-		set := NewHashSet([]int{})
+		set := New([]int{})
 		if set == nil {
-			t.Fatal("NewHashSet should not return nil")
+			t.Fatal("New should not return nil")
 		}
 		if set.Size() != 0 {
 			t.Errorf("Expected size 0, got %d", set.Size())
@@ -35,7 +35,7 @@ func TestNewHashSet(t *testing.T) {
 
 	t.Run("create hashset with values", func(t *testing.T) {
 		values := []int{1, 2, 3, 4, 5}
-		set := NewHashSet(values)
+		set := New(values)
 		if set.Size() != len(values) {
 			t.Errorf("Expected size %d, got %d", len(values), set.Size())
 		}
@@ -48,7 +48,7 @@ func TestNewHashSet(t *testing.T) {
 
 	t.Run("create hashset with duplicate values", func(t *testing.T) {
 		values := []int{1, 2, 2, 3, 3, 3, 4}
-		set := NewHashSet(values)
+		set := New(values)
 		expectedSize := 4 // unique values: 1, 2, 3, 4
 		if set.Size() != expectedSize {
 			t.Errorf("Expected size %d (duplicates removed), got %d", expectedSize, set.Size())
@@ -62,7 +62,7 @@ func TestNewHashSet(t *testing.T) {
 
 	t.Run("create hashset with string values", func(t *testing.T) {
 		values := []string{"hello", "world", "test", "hello"}
-		set := NewHashSet(values)
+		set := New(values)
 		expectedSize := 3 // unique values: "hello", "world", "test"
 		if set.Size() != expectedSize {
 			t.Errorf("Expected size %d, got %d", expectedSize, set.Size())
@@ -77,7 +77,7 @@ func TestNewHashSet(t *testing.T) {
 
 func TestAdd(t *testing.T) {
 	t.Run("add to empty hashset", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		set.Add(42)
 		if set.Size() != 1 {
 			t.Errorf("Expected size 1, got %d", set.Size())
@@ -91,7 +91,7 @@ func TestAdd(t *testing.T) {
 	})
 
 	t.Run("add multiple values", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		values := []int{1, 2, 3, 4, 5}
 
 		for i, v := range values {
@@ -106,7 +106,7 @@ func TestAdd(t *testing.T) {
 	})
 
 	t.Run("add duplicate values", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		set.Add(42)
 		set.Add(42)
 		set.Add(42)
@@ -120,14 +120,14 @@ func TestAdd(t *testing.T) {
 	})
 
 	t.Run("add different types", func(t *testing.T) {
-		stringSet := NewHashSet[string](nil)
+		stringSet := New[string](nil)
 		stringSet.Add("hello")
 		stringSet.Add("world")
 		if stringSet.Size() != 2 {
 			t.Errorf("Expected string set size 2, got %d", stringSet.Size())
 		}
 
-		boolSet := NewHashSet[bool](nil)
+		boolSet := New[bool](nil)
 		boolSet.Add(true)
 		boolSet.Add(false)
 		boolSet.Add(true) // duplicate
@@ -139,7 +139,7 @@ func TestAdd(t *testing.T) {
 
 func TestRemove(t *testing.T) {
 	t.Run("remove from empty hashset", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		set.Remove(42)
 		if set.Size() != 0 {
 			t.Errorf("Expected size to remain 0, got %d", set.Size())
@@ -147,7 +147,7 @@ func TestRemove(t *testing.T) {
 	})
 
 	t.Run("remove existing value", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3})
+		set := New([]int{1, 2, 3})
 		set.Remove(2)
 		if set.Size() != 2 {
 			t.Errorf("Expected size 2, got %d", set.Size())
@@ -161,7 +161,7 @@ func TestRemove(t *testing.T) {
 	})
 
 	t.Run("remove non-existing value", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3})
+		set := New([]int{1, 2, 3})
 		originalSize := set.Size()
 		set.Remove(99)
 		if set.Size() != originalSize {
@@ -171,7 +171,7 @@ func TestRemove(t *testing.T) {
 
 	t.Run("remove all values", func(t *testing.T) {
 		values := []int{1, 2, 3, 4, 5}
-		set := NewHashSet(values)
+		set := New(values)
 
 		for i, v := range values {
 			set.Remove(v)
@@ -192,7 +192,7 @@ func TestRemove(t *testing.T) {
 
 func TestContains(t *testing.T) {
 	t.Run("contains in empty hashset", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		if set.Contains(42) {
 			t.Error("Expected empty set to not contain any value")
 		}
@@ -200,7 +200,7 @@ func TestContains(t *testing.T) {
 
 	t.Run("contains existing values", func(t *testing.T) {
 		values := []int{1, 2, 3, 4, 5}
-		set := NewHashSet(values)
+		set := New(values)
 
 		for _, v := range values {
 			if !set.Contains(v) {
@@ -210,7 +210,7 @@ func TestContains(t *testing.T) {
 	})
 
 	t.Run("contains non-existing values", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3})
+		set := New([]int{1, 2, 3})
 		nonExisting := []int{0, 4, 99, -1}
 
 		for _, v := range nonExisting {
@@ -221,7 +221,7 @@ func TestContains(t *testing.T) {
 	})
 
 	t.Run("contains after add and remove", func(t *testing.T) {
-		set := NewHashSet[string](nil)
+		set := New[string](nil)
 
 		set.Add("test")
 		if !set.Contains("test") {
@@ -237,14 +237,14 @@ func TestContains(t *testing.T) {
 
 func TestSize(t *testing.T) {
 	t.Run("size of empty hashset", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		if set.Size() != 0 {
 			t.Errorf("Expected size 0 for empty set, got %d", set.Size())
 		}
 	})
 
 	t.Run("size changes with add operations", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 
 		for i := 1; i <= 10; i++ {
 			set.Add(i)
@@ -255,7 +255,7 @@ func TestSize(t *testing.T) {
 	})
 
 	t.Run("size changes with remove operations", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3, 4, 5})
+		set := New([]int{1, 2, 3, 4, 5})
 		initialSize := set.Size()
 
 		for i := 0; i < initialSize; i++ {
@@ -268,7 +268,7 @@ func TestSize(t *testing.T) {
 	})
 
 	t.Run("size with duplicates", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		set.Add(1)
 		set.Add(1)
 		set.Add(1)
@@ -280,21 +280,21 @@ func TestSize(t *testing.T) {
 
 func TestIsEmpty(t *testing.T) {
 	t.Run("empty hashset", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		if !set.IsEmpty() {
 			t.Error("Expected new set to be empty")
 		}
 	})
 
 	t.Run("non-empty hashset", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3})
+		set := New([]int{1, 2, 3})
 		if set.IsEmpty() {
 			t.Error("Expected set with values to not be empty")
 		}
 	})
 
 	t.Run("empty after clear", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3})
+		set := New([]int{1, 2, 3})
 		set.Clear()
 		if !set.IsEmpty() {
 			t.Error("Expected set to be empty after clear")
@@ -302,7 +302,7 @@ func TestIsEmpty(t *testing.T) {
 	})
 
 	t.Run("empty after removing all", func(t *testing.T) {
-		set := NewHashSet([]int{42})
+		set := New([]int{42})
 		set.Remove(42)
 		if !set.IsEmpty() {
 			t.Error("Expected set to be empty after removing all elements")
@@ -312,7 +312,7 @@ func TestIsEmpty(t *testing.T) {
 
 func TestClear(t *testing.T) {
 	t.Run("clear empty hashset", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		set.Clear()
 		if set.Size() != 0 {
 			t.Errorf("Expected size 0 after clearing empty set, got %d", set.Size())
@@ -323,7 +323,7 @@ func TestClear(t *testing.T) {
 	})
 
 	t.Run("clear non-empty hashset", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3, 4, 5})
+		set := New([]int{1, 2, 3, 4, 5})
 		set.Clear()
 		if set.Size() != 0 {
 			t.Errorf("Expected size 0 after clear, got %d", set.Size())
@@ -341,7 +341,7 @@ func TestClear(t *testing.T) {
 	})
 
 	t.Run("add after clear", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3})
+		set := New([]int{1, 2, 3})
 		set.Clear()
 		set.Add(42)
 
@@ -356,7 +356,7 @@ func TestClear(t *testing.T) {
 
 func TestToSlice(t *testing.T) {
 	t.Run("empty hashset to slice", func(t *testing.T) {
-		set := NewHashSet[int](nil)
+		set := New[int](nil)
 		slice := set.ToSlice()
 		if len(slice) != 0 {
 			t.Errorf("Expected empty slice, got length %d", len(slice))
@@ -365,7 +365,7 @@ func TestToSlice(t *testing.T) {
 
 	t.Run("hashset to slice", func(t *testing.T) {
 		values := []int{3, 1, 4, 1, 5, 9, 2, 6} // includes duplicates
-		set := NewHashSet(values)
+		set := New(values)
 		slice := set.ToSlice()
 
 		// Sort both slices for comparison since order is not guaranteed
@@ -379,7 +379,7 @@ func TestToSlice(t *testing.T) {
 
 	t.Run("string hashset to slice", func(t *testing.T) {
 		values := []string{"hello", "world", "test", "hello"}
-		set := NewHashSet(values)
+		set := New(values)
 		slice := set.ToSlice()
 
 		// Convert to map for easier checking since order is not guaranteed
@@ -395,7 +395,7 @@ func TestToSlice(t *testing.T) {
 	})
 
 	t.Run("slice independence", func(t *testing.T) {
-		set := NewHashSet([]int{1, 2, 3})
+		set := New([]int{1, 2, 3})
 		slice := set.ToSlice()
 
 		// Modify the slice
@@ -410,8 +410,8 @@ func TestToSlice(t *testing.T) {
 
 func TestEquals(t *testing.T) {
 	t.Run("empty hashsets equal", func(t *testing.T) {
-		set1 := NewHashSet[int](nil)
-		set2 := NewHashSet[int](nil)
+		set1 := New[int](nil)
+		set2 := New[int](nil)
 		if !set1.Equals(set2) {
 			t.Error("Expected empty sets to be equal")
 		}
@@ -419,49 +419,49 @@ func TestEquals(t *testing.T) {
 
 	t.Run("identical hashsets equal", func(t *testing.T) {
 		values := []int{1, 2, 3, 4, 5}
-		set1 := NewHashSet(values)
-		set2 := NewHashSet(values)
+		set1 := New(values)
+		set2 := New(values)
 		if !set1.Equals(set2) {
 			t.Error("Expected identical sets to be equal")
 		}
 	})
 
 	t.Run("different order same content equal", func(t *testing.T) {
-		set1 := NewHashSet([]int{1, 2, 3})
-		set2 := NewHashSet([]int{3, 1, 2})
+		set1 := New([]int{1, 2, 3})
+		set2 := New([]int{3, 1, 2})
 		if !set1.Equals(set2) {
 			t.Error("Expected sets with same content in different order to be equal")
 		}
 	})
 
 	t.Run("different size not equal", func(t *testing.T) {
-		set1 := NewHashSet([]int{1, 2, 3})
-		set2 := NewHashSet([]int{1, 2})
+		set1 := New([]int{1, 2, 3})
+		set2 := New([]int{1, 2})
 		if set1.Equals(set2) {
 			t.Error("Expected sets with different sizes to not be equal")
 		}
 	})
 
 	t.Run("different content not equal", func(t *testing.T) {
-		set1 := NewHashSet([]int{1, 2, 3})
-		set2 := NewHashSet([]int{4, 5, 6})
+		set1 := New([]int{1, 2, 3})
+		set2 := New([]int{4, 5, 6})
 		if set1.Equals(set2) {
 			t.Error("Expected sets with different content to not be equal")
 		}
 	})
 
 	t.Run("partially different content not equal", func(t *testing.T) {
-		set1 := NewHashSet([]int{1, 2, 3})
-		set2 := NewHashSet([]int{1, 2, 4})
+		set1 := New([]int{1, 2, 3})
+		set2 := New([]int{1, 2, 4})
 		if set1.Equals(set2) {
 			t.Error("Expected sets with partially different content to not be equal")
 		}
 	})
 
 	t.Run("string hashsets equality", func(t *testing.T) {
-		set1 := NewHashSet([]string{"hello", "world"})
-		set2 := NewHashSet([]string{"world", "hello"})
-		set3 := NewHashSet([]string{"hello", "test"})
+		set1 := New([]string{"hello", "world"})
+		set2 := New([]string{"world", "hello"})
+		set3 := New([]string{"hello", "test"})
 
 		if !set1.Equals(set2) {
 			t.Error("Expected string sets with same content to be equal")
@@ -475,7 +475,7 @@ func TestEquals(t *testing.T) {
 func TestHashSetIntegration(t *testing.T) {
 	t.Run("complex workflow", func(t *testing.T) {
 		// Create set with initial values
-		set := NewHashSet([]int{1, 2, 3, 2, 4}) // duplicates should be ignored
+		set := New([]int{1, 2, 3, 2, 4}) // duplicates should be ignored
 
 		// Verify initial state
 		if set.Size() != 4 {
@@ -523,8 +523,8 @@ func TestHashSetIntegration(t *testing.T) {
 	})
 
 	t.Run("set operations with equals", func(t *testing.T) {
-		set1 := NewHashSet([]int{1, 2, 3})
-		set2 := NewHashSet[int](nil)
+		set1 := New([]int{1, 2, 3})
+		set2 := New[int](nil)
 
 		// Build set2 to match set1
 		set2.Add(3)
@@ -545,7 +545,7 @@ func TestHashSetIntegration(t *testing.T) {
 
 // Benchmark tests
 func BenchmarkHashSetAdd(b *testing.B) {
-	set := NewHashSet[int](nil)
+	set := New[int](nil)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -554,7 +554,7 @@ func BenchmarkHashSetAdd(b *testing.B) {
 }
 
 func BenchmarkHashSetContains(b *testing.B) {
-	set := NewHashSet[int](nil)
+	set := New[int](nil)
 	// Pre-populate the set
 	for i := 0; i < 1000; i++ {
 		set.Add(i)
@@ -567,7 +567,7 @@ func BenchmarkHashSetContains(b *testing.B) {
 }
 
 func BenchmarkHashSetRemove(b *testing.B) {
-	set := NewHashSet[int](nil)
+	set := New[int](nil)
 	// Pre-populate the set
 	for i := 0; i < b.N; i++ {
 		set.Add(i)
@@ -580,7 +580,7 @@ func BenchmarkHashSetRemove(b *testing.B) {
 }
 
 func BenchmarkHashSetToSlice(b *testing.B) {
-	set := NewHashSet[int](nil)
+	set := New[int](nil)
 	// Pre-populate the set
 	for i := 0; i < 1000; i++ {
 		set.Add(i)

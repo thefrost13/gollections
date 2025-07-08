@@ -5,11 +5,11 @@ import (
 	"testing"
 )
 
-func TestNewPriorityQueue(t *testing.T) {
+func TestNew(t *testing.T) {
 	t.Run("create new priority queue", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		if pq == nil {
-			t.Fatal("NewPriorityQueue should not return nil")
+			t.Fatal("New should not return nil")
 		}
 		if pq.Size() != 0 {
 			t.Errorf("Expected size 0, got %d", pq.Size())
@@ -20,12 +20,12 @@ func TestNewPriorityQueue(t *testing.T) {
 	})
 
 	t.Run("create priority queue with different types", func(t *testing.T) {
-		stringPQ := NewPriorityQueue[string]()
+		stringPQ := New[string]()
 		if stringPQ.Size() != 0 {
 			t.Errorf("Expected string priority queue size 0, got %d", stringPQ.Size())
 		}
 
-		boolPQ := NewPriorityQueue[bool]()
+		boolPQ := New[bool]()
 		if boolPQ.Size() != 0 {
 			t.Errorf("Expected bool priority queue size 0, got %d", boolPQ.Size())
 		}
@@ -34,7 +34,7 @@ func TestNewPriorityQueue(t *testing.T) {
 
 func TestPriorityQueueEnqueue(t *testing.T) {
 	t.Run("enqueue single item", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 		pq.Enqueue("test", 5)
 
 		if pq.Size() != 1 {
@@ -49,7 +49,7 @@ func TestPriorityQueueEnqueue(t *testing.T) {
 	})
 
 	t.Run("enqueue multiple items with different priorities", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 
 		// Enqueue in non-priority order
 		pq.Enqueue("medium", 5)
@@ -68,7 +68,7 @@ func TestPriorityQueueEnqueue(t *testing.T) {
 	})
 
 	t.Run("enqueue items with same priority", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		pq.Enqueue(1, 5)
 		pq.Enqueue(2, 5)
 		pq.Enqueue(3, 5)
@@ -87,7 +87,7 @@ func TestPriorityQueueEnqueue(t *testing.T) {
 
 func TestPriorityQueueDequeue(t *testing.T) {
 	t.Run("dequeue from empty queue", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		value := pq.Dequeue()
 
 		var zero int
@@ -100,7 +100,7 @@ func TestPriorityQueueDequeue(t *testing.T) {
 	})
 
 	t.Run("dequeue single item", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 		pq.Enqueue("test", 1)
 
 		value := pq.Dequeue()
@@ -116,7 +116,7 @@ func TestPriorityQueueDequeue(t *testing.T) {
 	})
 
 	t.Run("dequeue in priority order", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 
 		// Add items with various priorities
 		items := []struct {
@@ -149,7 +149,7 @@ func TestPriorityQueueDequeue(t *testing.T) {
 	})
 
 	t.Run("dequeue with numeric values", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 
 		// Add numbers with priorities
 		pq.Enqueue(100, 3)
@@ -171,7 +171,7 @@ func TestPriorityQueueDequeue(t *testing.T) {
 
 func TestPriorityQueuePeek(t *testing.T) {
 	t.Run("peek empty queue", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		value := pq.Peek()
 
 		var zero int
@@ -184,7 +184,7 @@ func TestPriorityQueuePeek(t *testing.T) {
 	})
 
 	t.Run("peek does not modify queue", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 		pq.Enqueue("test", 1)
 
 		// Peek multiple times
@@ -200,7 +200,7 @@ func TestPriorityQueuePeek(t *testing.T) {
 	})
 
 	t.Run("peek returns highest priority", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 
 		pq.Enqueue(10, 5)
 		if pq.Peek() != 10 {
@@ -226,14 +226,14 @@ func TestPriorityQueuePeek(t *testing.T) {
 
 func TestPriorityQueueSize(t *testing.T) {
 	t.Run("size of empty queue", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		if pq.Size() != 0 {
 			t.Errorf("Expected size 0 for empty queue, got %d", pq.Size())
 		}
 	})
 
 	t.Run("size changes with enqueue operations", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 
 		for i := 1; i <= 10; i++ {
 			pq.Enqueue(i*10, i)
@@ -244,7 +244,7 @@ func TestPriorityQueueSize(t *testing.T) {
 	})
 
 	t.Run("size changes with dequeue operations", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 
 		// Add 5 elements
 		for i := 1; i <= 5; i++ {
@@ -263,14 +263,14 @@ func TestPriorityQueueSize(t *testing.T) {
 
 func TestPriorityQueueIsEmpty(t *testing.T) {
 	t.Run("empty queue", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		if !pq.IsEmpty() {
 			t.Error("Expected new queue to be empty")
 		}
 	})
 
 	t.Run("non-empty queue", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		pq.Enqueue(42, 1)
 		if pq.IsEmpty() {
 			t.Error("Expected queue with elements to not be empty")
@@ -278,7 +278,7 @@ func TestPriorityQueueIsEmpty(t *testing.T) {
 	})
 
 	t.Run("empty after clear", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		pq.Enqueue(1, 1)
 		pq.Enqueue(2, 2)
 		pq.Clear()
@@ -288,7 +288,7 @@ func TestPriorityQueueIsEmpty(t *testing.T) {
 	})
 
 	t.Run("empty after dequeuing all", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		pq.Enqueue(42, 1)
 		pq.Dequeue()
 		if !pq.IsEmpty() {
@@ -299,7 +299,7 @@ func TestPriorityQueueIsEmpty(t *testing.T) {
 
 func TestPriorityQueueClear(t *testing.T) {
 	t.Run("clear empty queue", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		pq.Clear()
 		if pq.Size() != 0 {
 			t.Errorf("Expected size 0 after clearing empty queue, got %d", pq.Size())
@@ -310,7 +310,7 @@ func TestPriorityQueueClear(t *testing.T) {
 	})
 
 	t.Run("clear non-empty queue", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 		pq.Enqueue("a", 1)
 		pq.Enqueue("b", 2)
 		pq.Enqueue("c", 3)
@@ -331,7 +331,7 @@ func TestPriorityQueueClear(t *testing.T) {
 	})
 
 	t.Run("use after clear", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		pq.Enqueue(1, 1)
 		pq.Enqueue(2, 2)
 		pq.Clear()
@@ -349,7 +349,7 @@ func TestPriorityQueueClear(t *testing.T) {
 
 func TestPriorityQueueToSlice(t *testing.T) {
 	t.Run("empty queue to slice", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		slice := pq.ToSlice()
 		if len(slice) != 0 {
 			t.Errorf("Expected empty slice, got length %d", len(slice))
@@ -357,7 +357,7 @@ func TestPriorityQueueToSlice(t *testing.T) {
 	})
 
 	t.Run("queue to slice", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		values := []int{10, 20, 30, 40}
 		priorities := []int{2, 1, 4, 3}
 
@@ -384,7 +384,7 @@ func TestPriorityQueueToSlice(t *testing.T) {
 	})
 
 	t.Run("string queue to slice", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 		pq.Enqueue("hello", 2)
 		pq.Enqueue("world", 1)
 		pq.Enqueue("test", 3)
@@ -407,7 +407,7 @@ func TestPriorityQueueToSlice(t *testing.T) {
 	})
 
 	t.Run("slice independence", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 		pq.Enqueue(1, 1)
 		pq.Enqueue(2, 2)
 
@@ -427,7 +427,7 @@ func TestPriorityQueueToSlice(t *testing.T) {
 
 func TestPriorityQueueBehavior(t *testing.T) {
 	t.Run("priority ordering", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 
 		// Add items in random priority order
 		items := []struct {
@@ -459,7 +459,7 @@ func TestPriorityQueueBehavior(t *testing.T) {
 	})
 
 	t.Run("mixed operations", func(t *testing.T) {
-		pq := NewPriorityQueue[int]()
+		pq := New[int]()
 
 		pq.Enqueue(10, 3)
 		pq.Enqueue(20, 1)
@@ -487,7 +487,7 @@ func TestPriorityQueueBehavior(t *testing.T) {
 	})
 
 	t.Run("negative priorities", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 
 		pq.Enqueue("normal", 0)
 		pq.Enqueue("high", -1)
@@ -510,7 +510,7 @@ func TestPriorityQueueBehavior(t *testing.T) {
 			ID   int
 		}
 
-		pq := NewPriorityQueue[Task]()
+		pq := New[Task]()
 
 		t1 := Task{Name: "Low", ID: 1}
 		t2 := Task{Name: "High", ID: 2}
@@ -534,7 +534,7 @@ func TestPriorityQueueBehavior(t *testing.T) {
 
 func TestPriorityQueueIntegration(t *testing.T) {
 	t.Run("complex workflow", func(t *testing.T) {
-		pq := NewPriorityQueue[string]()
+		pq := New[string]()
 
 		// Add initial items
 		pq.Enqueue("task1", 5)
@@ -591,7 +591,7 @@ func TestPriorityQueueIntegration(t *testing.T) {
 
 // Benchmark tests
 func BenchmarkPriorityQueueEnqueue(b *testing.B) {
-	pq := NewPriorityQueue[int]()
+	pq := New[int]()
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -600,7 +600,7 @@ func BenchmarkPriorityQueueEnqueue(b *testing.B) {
 }
 
 func BenchmarkPriorityQueueDequeue(b *testing.B) {
-	pq := NewPriorityQueue[int]()
+	pq := New[int]()
 	// Pre-populate the queue
 	for i := 0; i < b.N; i++ {
 		pq.Enqueue(i, i%1000)
@@ -613,7 +613,7 @@ func BenchmarkPriorityQueueDequeue(b *testing.B) {
 }
 
 func BenchmarkPriorityQueuePeek(b *testing.B) {
-	pq := NewPriorityQueue[int]()
+	pq := New[int]()
 	for i := 0; i < 1000; i++ {
 		pq.Enqueue(i, i)
 	}
@@ -625,7 +625,7 @@ func BenchmarkPriorityQueuePeek(b *testing.B) {
 }
 
 func BenchmarkPriorityQueueMixedOperations(b *testing.B) {
-	pq := NewPriorityQueue[int]()
+	pq := New[int]()
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {

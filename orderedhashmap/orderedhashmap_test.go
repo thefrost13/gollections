@@ -5,11 +5,11 @@ import (
 	"testing"
 )
 
-func TestNewOrderedHashMap(t *testing.T) {
+func TestNew(t *testing.T) {
 	t.Run("create empty ordered hash map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		if ohm == nil {
-			t.Fatal("NewOrderedHashMap should not return nil")
+			t.Fatal("New should not return nil")
 		}
 		if ohm.Size() != 0 {
 			t.Errorf("Expected size 0, got %d", ohm.Size())
@@ -28,7 +28,7 @@ func TestNewOrderedHashMap(t *testing.T) {
 
 func TestOrderedHashMap_Set(t *testing.T) {
 	t.Run("set single key-value pair", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 
 		if ohm.Size() != 1 {
@@ -49,7 +49,7 @@ func TestOrderedHashMap_Set(t *testing.T) {
 	})
 
 	t.Run("set multiple key-value pairs", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 		ohm.Set("key2", 200)
 		ohm.Set("key3", 300)
@@ -63,7 +63,7 @@ func TestOrderedHashMap_Set(t *testing.T) {
 	})
 
 	t.Run("update existing key", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 		ohm.Set("key2", 200)
 		ohm.Set("key1", 150) // Update existing key
@@ -81,7 +81,7 @@ func TestOrderedHashMap_Set(t *testing.T) {
 	})
 
 	t.Run("set with different types", func(t *testing.T) {
-		ohm := NewOrderedHashMap[int, string]()
+		ohm := New[int, string]()
 		ohm.Set(1, "one")
 		ohm.Set(2, "two")
 
@@ -97,7 +97,7 @@ func TestOrderedHashMap_Set(t *testing.T) {
 
 func TestOrderedHashMap_Get(t *testing.T) {
 	t.Run("get existing key", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 		ohm.Set("key2", 200)
 
@@ -119,7 +119,7 @@ func TestOrderedHashMap_Get(t *testing.T) {
 	})
 
 	t.Run("get non-existing key", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 
 		value, exists := ohm.Get("nonexistent")
@@ -132,7 +132,7 @@ func TestOrderedHashMap_Get(t *testing.T) {
 	})
 
 	t.Run("get from empty map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 
 		value, exists := ohm.Get("key1")
 		if exists {
@@ -146,7 +146,7 @@ func TestOrderedHashMap_Get(t *testing.T) {
 
 func TestOrderedHashMap_Delete(t *testing.T) {
 	t.Run("delete existing key from single element map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 
 		ohm.Delete("key1")
@@ -171,7 +171,7 @@ func TestOrderedHashMap_Delete(t *testing.T) {
 	})
 
 	t.Run("delete first element from multiple element map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 		ohm.Set("key2", 200)
 		ohm.Set("key3", 300)
@@ -196,7 +196,7 @@ func TestOrderedHashMap_Delete(t *testing.T) {
 	})
 
 	t.Run("delete middle element from multiple element map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 		ohm.Set("key2", 200)
 		ohm.Set("key3", 300)
@@ -221,7 +221,7 @@ func TestOrderedHashMap_Delete(t *testing.T) {
 	})
 
 	t.Run("delete last element from multiple element map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 		ohm.Set("key2", 200)
 		ohm.Set("key3", 300)
@@ -246,7 +246,7 @@ func TestOrderedHashMap_Delete(t *testing.T) {
 	})
 
 	t.Run("delete last element updates last pointer correctly", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 		ohm.Set("key2", 200)
 		ohm.Set("key3", 300)
@@ -272,7 +272,7 @@ func TestOrderedHashMap_Delete(t *testing.T) {
 	})
 
 	t.Run("delete non-existing key", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("key1", 100)
 
 		originalSize := ohm.Size()
@@ -284,7 +284,7 @@ func TestOrderedHashMap_Delete(t *testing.T) {
 	})
 
 	t.Run("delete from empty map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 
 		ohm.Delete("key1")
 
@@ -299,7 +299,7 @@ func TestOrderedHashMap_Delete(t *testing.T) {
 
 func TestOrderedHashMap_Size(t *testing.T) {
 	t.Run("size operations", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 
 		if ohm.Size() != 0 {
 			t.Errorf("Expected size 0, got %d", ohm.Size())
@@ -329,7 +329,7 @@ func TestOrderedHashMap_Size(t *testing.T) {
 
 func TestOrderedHashMap_IsEmpty(t *testing.T) {
 	t.Run("isEmpty operations", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 
 		if !ohm.IsEmpty() {
 			t.Error("Expected IsEmpty to return true for new map")
@@ -349,7 +349,7 @@ func TestOrderedHashMap_IsEmpty(t *testing.T) {
 
 func TestOrderedHashMap_Keys(t *testing.T) {
 	t.Run("keys maintain insertion order", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("first", 1)
 		ohm.Set("second", 2)
 		ohm.Set("third", 3)
@@ -363,7 +363,7 @@ func TestOrderedHashMap_Keys(t *testing.T) {
 	})
 
 	t.Run("keys from empty map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		keys := ohm.Keys()
 
 		if len(keys) != 0 {
@@ -372,7 +372,7 @@ func TestOrderedHashMap_Keys(t *testing.T) {
 	})
 
 	t.Run("keys with updates maintain order", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("first", 1)
 		ohm.Set("second", 2)
 		ohm.Set("third", 3)
@@ -389,7 +389,7 @@ func TestOrderedHashMap_Keys(t *testing.T) {
 
 func TestOrderedHashMap_Values(t *testing.T) {
 	t.Run("values maintain insertion order", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("first", 10)
 		ohm.Set("second", 20)
 		ohm.Set("third", 30)
@@ -403,7 +403,7 @@ func TestOrderedHashMap_Values(t *testing.T) {
 	})
 
 	t.Run("values from empty map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		values := ohm.Values()
 
 		if len(values) != 0 {
@@ -412,7 +412,7 @@ func TestOrderedHashMap_Values(t *testing.T) {
 	})
 
 	t.Run("values with updates", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("first", 10)
 		ohm.Set("second", 20)
 		ohm.Set("third", 30)
@@ -429,7 +429,7 @@ func TestOrderedHashMap_Values(t *testing.T) {
 
 func TestOrderedHashMap_ToSlice(t *testing.T) {
 	t.Run("toSlice maintains insertion order", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("first", 10)
 		ohm.Set("second", 20)
 		ohm.Set("third", 30)
@@ -447,7 +447,7 @@ func TestOrderedHashMap_ToSlice(t *testing.T) {
 	})
 
 	t.Run("toSlice from empty map", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		slice := ohm.ToSlice()
 
 		if len(slice) != 0 {
@@ -456,7 +456,7 @@ func TestOrderedHashMap_ToSlice(t *testing.T) {
 	})
 
 	t.Run("toSlice with updates", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("first", 10)
 		ohm.Set("second", 20)
 		ohm.Set("first", 15) // Update existing key
@@ -475,7 +475,7 @@ func TestOrderedHashMap_ToSlice(t *testing.T) {
 
 func TestOrderedHashMap_ComplexOperations(t *testing.T) {
 	t.Run("mixed operations maintain order", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 
 		// Add elements
 		ohm.Set("a", 1)
@@ -511,7 +511,7 @@ func TestOrderedHashMap_ComplexOperations(t *testing.T) {
 	})
 
 	t.Run("stress test with many operations", func(t *testing.T) {
-		ohm := NewOrderedHashMap[int, string]()
+		ohm := New[int, string]()
 
 		// Add many elements
 		for i := 0; i < 100; i++ {
@@ -544,7 +544,7 @@ func TestOrderedHashMap_ComplexOperations(t *testing.T) {
 
 func TestOrderedHashMap_EdgeCases(t *testing.T) {
 	t.Run("zero values", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("zero", 0)
 
 		value, exists := ohm.Get("zero")
@@ -557,7 +557,7 @@ func TestOrderedHashMap_EdgeCases(t *testing.T) {
 	})
 
 	t.Run("empty string keys", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, int]()
+		ohm := New[string, int]()
 		ohm.Set("", 42)
 
 		value, exists := ohm.Get("")
@@ -570,7 +570,7 @@ func TestOrderedHashMap_EdgeCases(t *testing.T) {
 	})
 
 	t.Run("nil pointer values", func(t *testing.T) {
-		ohm := NewOrderedHashMap[string, *int]()
+		ohm := New[string, *int]()
 		ohm.Set("nil", nil)
 
 		value, exists := ohm.Get("nil")

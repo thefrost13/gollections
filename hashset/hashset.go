@@ -4,13 +4,13 @@ package hashset
 
 // HashSet is a generic set data structure that stores unique values of comparable types.
 // It's implemented using Go's built-in map for O(1) average-case operations.
-// The zero value is ready to use but NewHashSet should be preferred for initialization.
+// The zero value is ready to use but New should be preferred for initialization.
 //
 // Type parameters:
 //   - T: the element type, must be comparable
 type HashSet[T comparable] map[T]bool
 
-// NewHashSet creates and returns a new HashSet initialized with the elements from the given slice.
+// New creates and returns a new HashSet initialized with the elements from the given slice.
 // Duplicate elements in the slice are automatically removed.
 // If the slice is nil, an empty set is returned.
 // Time complexity: O(n) where n is the length of the slice.
@@ -23,9 +23,9 @@ type HashSet[T comparable] map[T]bool
 //
 // Example:
 //
-//	set := NewHashSet([]int{1, 2, 3, 2, 1})  // Creates set with {1, 2, 3}
-//	emptySet := NewHashSet[string](nil)       // Creates empty set
-func NewHashSet[T comparable](sli []T) HashSet[T] {
+//	set := New([]int{1, 2, 3, 2, 1})  // Creates set with {1, 2, 3}
+//	emptySet := New[string](nil)       // Creates empty set
+func New[T comparable](sli []T) HashSet[T] {
 	set := make(HashSet[T])
 	for _, v := range sli {
 		set[v] = true
@@ -156,8 +156,8 @@ func (s HashSet[T]) ToSlice() []T {
 //
 // Example:
 //
-//	set1 := NewHashSet([]int{1, 2, 3})
-//	set2 := NewHashSet([]int{3, 2, 1})  // Different order
+//	set1 := New([]int{1, 2, 3})
+//	set2 := New([]int{3, 2, 1})  // Different order
 //	if set1.Equals(set2) {
 //	    fmt.Println("Sets are equal")  // This will print
 //	}

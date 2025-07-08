@@ -6,7 +6,7 @@ import "github.com/thefrost13/gollections/node"
 
 // Queue is a generic FIFO (First In, First Out) data structure implemented using a linked list.
 // It provides O(1) enqueue and dequeue operations and maintains elements in insertion order.
-// The zero value is ready to use but NewQueue should be preferred for initialization.
+// The zero value is ready to use but New should be preferred for initialization.
 //
 // Type parameters:
 //   - T: the element type, can be any type
@@ -16,7 +16,7 @@ type Queue[T any] struct {
 	size  int                 // number of elements in the queue
 }
 
-// NewQueue creates and returns a new Queue initialized with the elements from the given slice.
+// New creates and returns a new Queue initialized with the elements from the given slice.
 // Elements are enqueued in the order they appear in the slice.
 // If the slice is nil, an empty queue is returned.
 // Time complexity: O(n) where n is the length of the slice.
@@ -29,9 +29,9 @@ type Queue[T any] struct {
 //
 // Example:
 //
-//	queue := NewQueue([]int{1, 2, 3})  // Creates queue with 1 at front
-//	emptyQueue := NewQueue[string](nil)  // Creates empty queue
-func NewQueue[T any](sli []T) *Queue[T] {
+//	queue := New([]int{1, 2, 3})  // Creates queue with 1 at front
+//	emptyQueue := New[string](nil)  // Creates empty queue
+func New[T any](sli []T) *Queue[T] {
 	if sli == nil {
 		return &Queue[T]{}
 	}

@@ -50,7 +50,7 @@ func (pq *PriorityQueue[T]) Pop() any {
 	return last
 }
 
-// NewPriorityQueue creates and returns a new empty PriorityQueue.
+// New creates and returns a new empty PriorityQueue.
 // The returned queue is ready to use and will maintain elements in priority order.
 // Time complexity: O(1).
 //
@@ -59,10 +59,10 @@ func (pq *PriorityQueue[T]) Pop() any {
 //
 // Example:
 //
-//	pq := NewPriorityQueue[string]()
+//	pq := New[string]()
 //	pq.Enqueue("low priority", 10)
 //	pq.Enqueue("high priority", 1)
-func NewPriorityQueue[T any]() *PriorityQueue[T] {
+func New[T any]() *PriorityQueue[T] {
 	pq := &PriorityQueue[T]{}
 	heap.Init(pq)
 	return pq

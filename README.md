@@ -9,11 +9,21 @@ A generic collections library for Go that provides type-safe data structures usi
 - **Queue**: A FIFO (First In, First Out) queue implementation using linked list  
 - **PriorityQueue**: A priority queue implementation using Go's container/heap
 - **OrderedHashMap**: A hash map that maintains insertion order of key-value pairs
+- **LinkedNode**: A generic linked list node used internally by other data structures
 
 ## Installation
 
 ```bash
 go get github.com/thefrost13/gollections
+```
+
+To use individual packages:
+```bash
+go get github.com/thefrost13/gollections/hashset
+go get github.com/thefrost13/gollections/stack
+go get github.com/thefrost13/gollections/queue
+go get github.com/thefrost13/gollections/priorityqueue
+go get github.com/thefrost13/gollections/orderedhashmap
 ```
 
 ## Usage
@@ -25,12 +35,12 @@ package main
 
 import (
     "fmt"
-    "github.com/thefrost13/gollections"
+    "github.com/thefrost13/gollections/hashset"
 )
 
 func main() {
     // Create a new HashSet
-    set := gollections.NewHashSet([]int{1, 2, 3, 2, 4}) // Duplicates are automatically removed
+    set := hashset.New([]int{1, 2, 3, 2, 4}) // Duplicates are automatically removed
     
     // Add elements
     set.Add(5)
@@ -62,12 +72,12 @@ package main
 
 import (
     "fmt"
-    "github.com/thefrost13/gollections"
+    "github.com/thefrost13/gollections/stack"
 )
 
 func main() {
     // Create a new Stack
-    stack := gollections.NewStack([]string{"first", "second"})
+    stack := stack.New([]string{"first", "second"})
     
     // Push elements
     stack.Push("third")
@@ -92,12 +102,12 @@ package main
 
 import (
     "fmt"
-    "github.com/thefrost13/gollections"
+    "github.com/thefrost13/gollections/queue"
 )
 
 func main() {
     // Create a new Queue
-    queue := gollections.NewQueue([]int{1, 2, 3})
+    queue := queue.New([]int{1, 2, 3})
     
     // Enqueue elements
     queue.Enqueue(4)
@@ -122,12 +132,12 @@ package main
 
 import (
     "fmt"
-    "github.com/thefrost13/gollections"
+    "github.com/thefrost13/gollections/priorityqueue"
 )
 
 func main() {
     // Create a new PriorityQueue
-    pq := gollections.NewPriorityQueue[string]()
+    pq := priorityqueue.New[string]()
     
     // Enqueue elements with priorities (lower number = higher priority)
     pq.Enqueue("low priority", 10)
@@ -153,12 +163,12 @@ package main
 
 import (
     "fmt"
-    "github.com/thefrost13/gollections"
+    "github.com/thefrost13/gollections/orderedhashmap"
 )
 
 func main() {
     // Create a new OrderedHashMap
-    ohm := gollections.NewOrderedHashMap[string, int]()
+    ohm := orderedhashmap.New[string, int]()
     
     // Set key-value pairs (maintains insertion order)
     ohm.Set("first", 1)
@@ -194,6 +204,18 @@ func main() {
 }
 ```
 
+## Performance Characteristics
+
+| Data Structure | Access | Search | Insertion | Deletion | Space |
+|---------------|--------|--------|-----------|----------|-------|
+| HashSet       | -      | O(1)   | O(1)      | O(1)     | O(n)  |
+| Stack         | O(1)   | O(n)   | O(1)      | O(1)     | O(n)  |
+| Queue         | O(1)   | O(n)   | O(1)      | O(1)     | O(n)  |
+| PriorityQueue | O(1)   | O(n)   | O(log n)  | O(log n) | O(n)  |
+| OrderedHashMap| O(1)   | O(1)   | O(1)      | O(n)     | O(n)  |
+
+*Note: All complexities are average case. OrderedHashMap deletion is O(n) due to linked list traversal.*
+
 ## API Reference
 
 ### Common Methods
@@ -205,41 +227,55 @@ Most collections implement these common methods:
 
 Some collections also implement:
 - `Clear()` - Removes all elements (HashSet, Stack, Queue, PriorityQueue)
+- `ToSlice()` - Returns a slice containing all elements (HashSet, Stack, Queue, PriorityQueue)
 
 ### HashSet Methods
 
-- `NewHashSet[T comparable](slice []T) HashSet[T]` - Creates a new HashSet
+- `New[T comparable](slice []T) HashSet[T]` - Creates a new HashSet
 - `Add(value T)` - Adds an element to the set
 - `Remove(value T)` - Removes an element from the set
 - `Contains(value T) bool` - Checks if an element exists in the set
 - `ToSlice() []T` - Returns a slice containing all elements
 - `Equals(other HashSet[T]) bool` - Checks if two sets are equal
+- `Clear()` - Removes all elements from the set
 
 ### Stack Methods
 
-- `NewStack[T any](slice []T) *Stack[T]` - Creates a new Stack
+- `New[T any](slice []T) *Stack[T]` - Creates a new Stack
 - `Push(value T)` - Pushes an element onto the stack
 - `Pop() T` - Pops and returns the top element
 - `Peek() T` - Returns the top element without removing it
+- `ToSlice() []T` - Returns a slice containing all elements in LIFO order
+- `Clear()` - Removes all elements from the stack
 
 ### Queue Methods
 
-- `NewQueue[T any](slice []T) *Queue[T]` - Creates a new Queue
+- `New[T any](slice []T) *Queue[T]` - Creates a new Queue
 - `Enqueue(value T)` - Adds an element to the back of the queue
 - `Dequeue() T` - Removes and returns the front element
 - `Peek() T` - Returns the front element without removing it
+- `ToSlice() []T` - Returns a slice containing all elements in FIFO order
+- `Clear()` - Removes all elements from the queue
 
 ### PriorityQueue Methods
 
-- `NewPriorityQueue[T any]() *PriorityQueue[T]` - Creates a new PriorityQueue
+- `New[T any]() *PriorityQueue[T]` - Creates a new PriorityQueue
 - `Enqueue(value T, priority int)` - Adds an element with a priority
 - `Dequeue() T` - Removes and returns the highest priority element
 - `Peek() T` - Returns the highest priority element without removing it
 - `ToSlice() []T` - Returns a slice containing all elements
+- `Clear()` - Removes all elements from the priority queue
+
+- `New[T any]() *PriorityQueue[T]` - Creates a new PriorityQueue
+- `Enqueue(value T, priority int)` - Adds an element with a priority
+- `Dequeue() T` - Removes and returns the highest priority element
+- `Peek() T` - Returns the highest priority element without removing it
+- `ToSlice() []T` - Returns a slice containing all elements
+- `Clear()` - Removes all elements from the priority queue
 
 ### OrderedHashMap Methods
 
-- `NewOrderedHashMap[K comparable, V any]() *OrderedHashMap[K, V]` - Creates a new OrderedHashMap
+- `New[K comparable, V any]() *OrderedHashMap[K, V]` - Creates a new OrderedHashMap
 - `Set(key K, value V)` - Sets a key-value pair (maintains insertion order)
 - `Get(key K) (V, bool)` - Gets a value by key, returns value and existence flag
 - `Delete(key K)` - Removes a key-value pair from the map
@@ -249,7 +285,7 @@ Some collections also implement:
 
 ## Requirements
 
-- Go 1.18 or later (for generics support)
+- Go 1.24 or later (for generics support)
 
 ## License
 

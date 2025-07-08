@@ -6,7 +6,7 @@ import "github.com/thefrost13/gollections/node"
 
 // Stack is a generic LIFO (Last In, First Out) data structure implemented using a linked list.
 // It provides O(1) push and pop operations and maintains elements in reverse order of insertion.
-// The zero value is ready to use but NewStack should be preferred for initialization.
+// The zero value is ready to use but New should be preferred for initialization.
 //
 // Type parameters:
 //   - T: the element type, can be any type
@@ -15,7 +15,7 @@ type Stack[T any] struct {
 	size int                 // number of elements in the stack
 }
 
-// NewStack creates and returns a new Stack initialized with the elements from the given slice.
+// New creates and returns a new Stack initialized with the elements from the given slice.
 // Elements are pushed in the order they appear in the slice, so the last element becomes the top.
 // If the slice is nil, an empty stack is returned.
 // Time complexity: O(n) where n is the length of the slice.
@@ -28,9 +28,9 @@ type Stack[T any] struct {
 //
 // Example:
 //
-//	stack := NewStack([]int{1, 2, 3})  // Creates stack with 3 on top
-//	emptyStack := NewStack[string](nil)  // Creates empty stack
-func NewStack[T any](sli []T) *Stack[T] {
+//	stack := New([]int{1, 2, 3})  // Creates stack with 3 on top
+//	emptyStack := New[string](nil)  // Creates empty stack
+func New[T any](sli []T) *Stack[T] {
 	if sli == nil {
 		return &Stack[T]{}
 	}

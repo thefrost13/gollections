@@ -5,11 +5,11 @@ import (
 	"testing"
 )
 
-func TestNewStack(t *testing.T) {
+func TestNew(t *testing.T) {
 	t.Run("create empty stack with nil slice", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		if stack == nil {
-			t.Fatal("NewStack should not return nil")
+			t.Fatal("New should not return nil")
 		}
 		if stack.Size() != 0 {
 			t.Errorf("Expected size 0, got %d", stack.Size())
@@ -20,9 +20,9 @@ func TestNewStack(t *testing.T) {
 	})
 
 	t.Run("create empty stack with empty slice", func(t *testing.T) {
-		stack := NewStack([]int{})
+		stack := New([]int{})
 		if stack == nil {
-			t.Fatal("NewStack should not return nil")
+			t.Fatal("New should not return nil")
 		}
 		if stack.Size() != 0 {
 			t.Errorf("Expected size 0, got %d", stack.Size())
@@ -31,9 +31,9 @@ func TestNewStack(t *testing.T) {
 
 	t.Run("create stack with values", func(t *testing.T) {
 		values := []int{1, 2, 3, 4, 5}
-		stack := NewStack(values)
+		stack := New(values)
 		if stack == nil {
-			t.Fatal("NewStack should not return nil")
+			t.Fatal("New should not return nil")
 		}
 		if stack.Size() != len(values) {
 			t.Errorf("Expected size %d, got %d", len(values), stack.Size())
@@ -46,7 +46,7 @@ func TestNewStack(t *testing.T) {
 
 	t.Run("create stack with string values", func(t *testing.T) {
 		values := []string{"hello", "world", "test"}
-		stack := NewStack(values)
+		stack := New(values)
 		if stack.Size() != 3 {
 			t.Errorf("Expected size 3, got %d", stack.Size())
 		}
@@ -58,7 +58,7 @@ func TestNewStack(t *testing.T) {
 
 func TestStackPush(t *testing.T) {
 	t.Run("push to empty stack", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		stack.Push(42)
 		if stack.Size() != 1 {
 			t.Errorf("Expected size 1, got %d", stack.Size())
@@ -69,7 +69,7 @@ func TestStackPush(t *testing.T) {
 	})
 
 	t.Run("push multiple values", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		values := []int{1, 2, 3, 4, 5}
 
 		for i, v := range values {
@@ -84,14 +84,14 @@ func TestStackPush(t *testing.T) {
 	})
 
 	t.Run("push different types", func(t *testing.T) {
-		stringStack := NewStack[string](nil)
+		stringStack := New[string](nil)
 		stringStack.Push("hello")
 		stringStack.Push("world")
 		if stringStack.Peek() != "world" {
 			t.Errorf("Expected top value 'world', got '%s'", stringStack.Peek())
 		}
 
-		boolStack := NewStack[bool](nil)
+		boolStack := New[bool](nil)
 		boolStack.Push(true)
 		boolStack.Push(false)
 		if boolStack.Peek() != false {
@@ -102,7 +102,7 @@ func TestStackPush(t *testing.T) {
 
 func TestStackPop(t *testing.T) {
 	t.Run("pop from empty stack", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		value := stack.Pop()
 		var zero int
 		if value != zero {
@@ -114,7 +114,7 @@ func TestStackPop(t *testing.T) {
 	})
 
 	t.Run("pop single value", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		stack.Push(42)
 		value := stack.Pop()
 		if value != 42 {
@@ -126,7 +126,7 @@ func TestStackPop(t *testing.T) {
 	})
 
 	t.Run("pop multiple values LIFO order", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		values := []int{1, 2, 3, 4, 5}
 
 		// Push values
@@ -149,7 +149,7 @@ func TestStackPop(t *testing.T) {
 
 	t.Run("pop from stack created with slice", func(t *testing.T) {
 		values := []int{1, 2, 3}
-		stack := NewStack(values)
+		stack := New(values)
 
 		// Should pop in reverse order of the slice
 		expected := []int{3, 2, 1}
@@ -164,7 +164,7 @@ func TestStackPop(t *testing.T) {
 
 func TestStackPeek(t *testing.T) {
 	t.Run("peek empty stack", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		value := stack.Peek()
 		var zero int
 		if value != zero {
@@ -176,7 +176,7 @@ func TestStackPeek(t *testing.T) {
 	})
 
 	t.Run("peek does not modify stack", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		stack.Push(42)
 
 		// Peek multiple times
@@ -192,7 +192,7 @@ func TestStackPeek(t *testing.T) {
 	})
 
 	t.Run("peek after push and pop operations", func(t *testing.T) {
-		stack := NewStack[string](nil)
+		stack := New[string](nil)
 
 		stack.Push("first")
 		if stack.Peek() != "first" {
@@ -213,14 +213,14 @@ func TestStackPeek(t *testing.T) {
 
 func TestStackSize(t *testing.T) {
 	t.Run("size of empty stack", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		if stack.Size() != 0 {
 			t.Errorf("Expected size 0 for empty stack, got %d", stack.Size())
 		}
 	})
 
 	t.Run("size changes with push operations", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 
 		for i := 1; i <= 10; i++ {
 			stack.Push(i)
@@ -231,7 +231,7 @@ func TestStackSize(t *testing.T) {
 	})
 
 	t.Run("size changes with pop operations", func(t *testing.T) {
-		stack := NewStack([]int{1, 2, 3, 4, 5})
+		stack := New([]int{1, 2, 3, 4, 5})
 		initialSize := stack.Size()
 
 		for i := 0; i < initialSize; i++ {
@@ -244,7 +244,7 @@ func TestStackSize(t *testing.T) {
 	})
 
 	t.Run("size with mixed operations", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 
 		// Push 3 elements
 		stack.Push(1)
@@ -271,7 +271,7 @@ func TestStackSize(t *testing.T) {
 
 func TestStackToSlice(t *testing.T) {
 	t.Run("empty stack to slice", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		slice := stack.ToSlice()
 		if len(slice) != 0 {
 			t.Errorf("Expected empty slice, got length %d", len(slice))
@@ -280,7 +280,7 @@ func TestStackToSlice(t *testing.T) {
 
 	t.Run("stack to slice maintains LIFO order", func(t *testing.T) {
 		values := []int{1, 2, 3, 4, 5}
-		stack := NewStack[int](values)
+		stack := New[int](values)
 		slice := stack.ToSlice()
 
 		// ToSlice should return elements in LIFO order (top to bottom)
@@ -297,7 +297,7 @@ func TestStackToSlice(t *testing.T) {
 
 	t.Run("string stack to slice", func(t *testing.T) {
 		values := []string{"first", "second", "third"}
-		stack := NewStack[string](values)
+		stack := New[string](values)
 		slice := stack.ToSlice()
 
 		// ToSlice should return elements in LIFO order
@@ -313,7 +313,7 @@ func TestStackToSlice(t *testing.T) {
 	})
 
 	t.Run("slice independence", func(t *testing.T) {
-		stack := NewStack[int]([]int{1, 2, 3})
+		stack := New[int]([]int{1, 2, 3})
 		slice := stack.ToSlice()
 
 		// Modify the slice
@@ -326,7 +326,7 @@ func TestStackToSlice(t *testing.T) {
 	})
 
 	t.Run("partial stack to slice", func(t *testing.T) {
-		stack := NewStack[int]([]int{1, 2, 3, 4, 5})
+		stack := New[int]([]int{1, 2, 3, 4, 5})
 
 		// Pop some elements (removes 5 and 4)
 		stack.Pop()
@@ -341,7 +341,7 @@ func TestStackToSlice(t *testing.T) {
 	})
 
 	t.Run("single element stack to slice", func(t *testing.T) {
-		stack := NewStack[int](nil)
+		stack := New[int](nil)
 		stack.Push(42)
 
 		slice := stack.ToSlice()
@@ -356,7 +356,7 @@ func TestStackToSlice(t *testing.T) {
 func TestStackIntegration(t *testing.T) {
 	t.Run("complex workflow", func(t *testing.T) {
 		// Create stack with initial values
-		stack := NewStack([]int{10, 20, 30})
+		stack := New([]int{10, 20, 30})
 
 		// Verify initial state
 		if stack.Size() != 3 {
@@ -402,7 +402,7 @@ func TestStackIntegration(t *testing.T) {
 
 // Benchmark tests
 func BenchmarkStackPush(b *testing.B) {
-	stack := NewStack[int](nil)
+	stack := New[int](nil)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -411,7 +411,7 @@ func BenchmarkStackPush(b *testing.B) {
 }
 
 func BenchmarkStackPop(b *testing.B) {
-	stack := NewStack[int](nil)
+	stack := New[int](nil)
 	// Pre-populate the stack
 	for i := 0; i < b.N; i++ {
 		stack.Push(i)
@@ -424,7 +424,7 @@ func BenchmarkStackPop(b *testing.B) {
 }
 
 func BenchmarkStackPeek(b *testing.B) {
-	stack := NewStack([]int{1, 2, 3, 4, 5})
+	stack := New([]int{1, 2, 3, 4, 5})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {

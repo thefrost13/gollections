@@ -5,9 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewQueue(t *testing.T) {
-	t.Run("NewQueue with nil slice", func(t *testing.T) {
-		q := NewQueue[int](nil)
+func TestNew(t *testing.T) {
+	t.Run("New with nil slice", func(t *testing.T) {
+		q := New[int](nil)
 		if q == nil {
 			t.Fatal("Expected queue to be initialized, got nil")
 		}
@@ -22,8 +22,8 @@ func TestNewQueue(t *testing.T) {
 		}
 	})
 
-	t.Run("NewQueue with empty slice", func(t *testing.T) {
-		q := NewQueue[int]([]int{})
+	t.Run("New with empty slice", func(t *testing.T) {
+		q := New[int]([]int{})
 		if q == nil {
 			t.Fatal("Expected queue to be initialized, got nil")
 		}
@@ -32,8 +32,8 @@ func TestNewQueue(t *testing.T) {
 		}
 	})
 
-	t.Run("NewQueue with single element", func(t *testing.T) {
-		q := NewQueue[int]([]int{42})
+	t.Run("New with single element", func(t *testing.T) {
+		q := New[int]([]int{42})
 		if q.Size() != 1 {
 			t.Errorf("Expected size 1, got %d", q.Size())
 		}
@@ -42,9 +42,9 @@ func TestNewQueue(t *testing.T) {
 		}
 	})
 
-	t.Run("NewQueue with multiple elements", func(t *testing.T) {
+	t.Run("New with multiple elements", func(t *testing.T) {
 		values := []int{1, 2, 3, 4, 5}
-		q := NewQueue[int](values)
+		q := New[int](values)
 		if q.Size() != len(values) {
 			t.Errorf("Expected size %d, got %d", len(values), q.Size())
 		}
@@ -58,9 +58,9 @@ func TestNewQueue(t *testing.T) {
 		}
 	})
 
-	t.Run("NewQueue with string type", func(t *testing.T) {
+	t.Run("New with string type", func(t *testing.T) {
 		values := []string{"hello", "world", "test"}
-		q := NewQueue[string](values)
+		q := New[string](values)
 		if q.Size() != len(values) {
 			t.Errorf("Expected size %d, got %d", len(values), q.Size())
 		}
@@ -72,7 +72,7 @@ func TestNewQueue(t *testing.T) {
 
 func TestQueueEnqueue(t *testing.T) {
 	t.Run("Enqueue to empty queue", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 		q.Enqueue(100)
 
 		if q.Size() != 1 {
@@ -93,7 +93,7 @@ func TestQueueEnqueue(t *testing.T) {
 	})
 
 	t.Run("Enqueue multiple elements", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 		values := []int{1, 2, 3, 4, 5}
 
 		for i, value := range values {
@@ -108,7 +108,7 @@ func TestQueueEnqueue(t *testing.T) {
 	})
 
 	t.Run("Enqueue maintains FIFO order", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 		q.Enqueue(1)
 		q.Enqueue(2)
 		q.Enqueue(3)
@@ -127,7 +127,7 @@ func TestQueueEnqueue(t *testing.T) {
 
 func TestQueueDequeue(t *testing.T) {
 	t.Run("Dequeue from empty queue", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 		result := q.Dequeue()
 
 		var expected int
@@ -140,7 +140,7 @@ func TestQueueDequeue(t *testing.T) {
 	})
 
 	t.Run("Dequeue single element", func(t *testing.T) {
-		q := NewQueue[int]([]int{42})
+		q := New[int]([]int{42})
 		result := q.Dequeue()
 
 		if result != 42 {
@@ -156,7 +156,7 @@ func TestQueueDequeue(t *testing.T) {
 
 	t.Run("Dequeue multiple elements", func(t *testing.T) {
 		values := []int{10, 20, 30, 40, 50}
-		q := NewQueue[int](values)
+		q := New[int](values)
 
 		for i, expected := range values {
 			result := q.Dequeue()
@@ -175,7 +175,7 @@ func TestQueueDequeue(t *testing.T) {
 	})
 
 	t.Run("Dequeue with string type", func(t *testing.T) {
-		q := NewQueue[string]([]string{"first", "second", "third"})
+		q := New[string]([]string{"first", "second", "third"})
 
 		if q.Dequeue() != "first" {
 			t.Error("Expected first dequeue to return 'first'")
@@ -197,7 +197,7 @@ func TestQueueDequeue(t *testing.T) {
 
 func TestQueuePeek(t *testing.T) {
 	t.Run("Peek empty queue", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 		result := q.Peek()
 
 		var expected int
@@ -210,7 +210,7 @@ func TestQueuePeek(t *testing.T) {
 	})
 
 	t.Run("Peek single element", func(t *testing.T) {
-		q := NewQueue[int]([]int{99})
+		q := New[int]([]int{99})
 		result := q.Peek()
 
 		if result != 99 {
@@ -228,7 +228,7 @@ func TestQueuePeek(t *testing.T) {
 
 	t.Run("Peek multiple elements", func(t *testing.T) {
 		values := []int{1, 2, 3, 4}
-		q := NewQueue[int](values)
+		q := New[int](values)
 
 		// Peek should always return the first element
 		for i := 0; i < 5; i++ {
@@ -245,7 +245,7 @@ func TestQueuePeek(t *testing.T) {
 	})
 
 	t.Run("Peek after operations", func(t *testing.T) {
-		q := NewQueue[int]([]int{1, 2, 3})
+		q := New[int]([]int{1, 2, 3})
 
 		// Initial peek
 		if q.Peek() != 1 {
@@ -268,14 +268,14 @@ func TestQueuePeek(t *testing.T) {
 
 func TestQueueSize(t *testing.T) {
 	t.Run("Size of empty queue", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 		if q.Size() != 0 {
 			t.Errorf("Expected size 0, got %d", q.Size())
 		}
 	})
 
 	t.Run("Size updates with operations", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 
 		// After enqueues
 		q.Enqueue(1)
@@ -313,7 +313,7 @@ func TestQueueSize(t *testing.T) {
 
 func TestQueueToSlice(t *testing.T) {
 	t.Run("empty queue to slice", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 		slice := q.ToSlice()
 		if len(slice) != 0 {
 			t.Errorf("Expected empty slice, got length %d", len(slice))
@@ -322,7 +322,7 @@ func TestQueueToSlice(t *testing.T) {
 
 	t.Run("queue to slice maintains FIFO order", func(t *testing.T) {
 		values := []int{1, 2, 3, 4, 5}
-		q := NewQueue[int](values)
+		q := New[int](values)
 		slice := q.ToSlice()
 
 		if len(slice) != len(values) {
@@ -336,7 +336,7 @@ func TestQueueToSlice(t *testing.T) {
 
 	t.Run("string queue to slice", func(t *testing.T) {
 		values := []string{"first", "second", "third"}
-		q := NewQueue[string](values)
+		q := New[string](values)
 		slice := q.ToSlice()
 
 		if len(slice) != len(values) {
@@ -349,7 +349,7 @@ func TestQueueToSlice(t *testing.T) {
 	})
 
 	t.Run("slice independence", func(t *testing.T) {
-		q := NewQueue[int]([]int{1, 2, 3})
+		q := New[int]([]int{1, 2, 3})
 		slice := q.ToSlice()
 
 		// Modify the slice
@@ -362,7 +362,7 @@ func TestQueueToSlice(t *testing.T) {
 	})
 
 	t.Run("partial queue to slice", func(t *testing.T) {
-		q := NewQueue[int]([]int{1, 2, 3, 4, 5})
+		q := New[int]([]int{1, 2, 3, 4, 5})
 
 		// Dequeue some elements
 		q.Dequeue()
@@ -379,7 +379,7 @@ func TestQueueToSlice(t *testing.T) {
 
 func TestQueueBehavior(t *testing.T) {
 	t.Run("FIFO behavior", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 		expected := []int{1, 2, 3, 4, 5}
 
 		// Enqueue all elements
@@ -399,7 +399,7 @@ func TestQueueBehavior(t *testing.T) {
 	})
 
 	t.Run("Mixed operations", func(t *testing.T) {
-		q := NewQueue[int](nil)
+		q := New[int](nil)
 
 		q.Enqueue(1)
 		q.Enqueue(2)
@@ -432,7 +432,7 @@ func TestQueueBehavior(t *testing.T) {
 			Age  int
 		}
 
-		q := NewQueue[Person](nil)
+		q := New[Person](nil)
 		p1 := Person{Name: "Alice", Age: 30}
 		p2 := Person{Name: "Bob", Age: 25}
 
@@ -457,7 +457,7 @@ func TestQueueBehavior(t *testing.T) {
 
 // Benchmark tests
 func BenchmarkQueueEnqueue(b *testing.B) {
-	q := NewQueue[int](nil)
+	q := New[int](nil)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -466,7 +466,7 @@ func BenchmarkQueueEnqueue(b *testing.B) {
 }
 
 func BenchmarkQueueDequeue(b *testing.B) {
-	q := NewQueue[int](nil)
+	q := New[int](nil)
 	// Pre-populate the queue
 	for i := 0; i < b.N; i++ {
 		q.Enqueue(i)
@@ -479,7 +479,7 @@ func BenchmarkQueueDequeue(b *testing.B) {
 }
 
 func BenchmarkQueuePeek(b *testing.B) {
-	q := NewQueue[int]([]int{1, 2, 3, 4, 5})
+	q := New[int]([]int{1, 2, 3, 4, 5})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -488,7 +488,7 @@ func BenchmarkQueuePeek(b *testing.B) {
 }
 
 func BenchmarkQueueMixedOperations(b *testing.B) {
-	q := NewQueue[int](nil)
+	q := New[int](nil)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {

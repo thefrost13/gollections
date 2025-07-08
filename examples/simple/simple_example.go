@@ -8,7 +8,7 @@ import (
 
 func main() {
 	// Create a new OrderedHashMap
-	ohm := orderedhashmap.NewOrderedHashMap[string, int]()
+	ohm := orderedhashmap.New[string, int]()
 
 	// Set key-value pairs (maintains insertion order)
 	ohm.Set("first", 1)

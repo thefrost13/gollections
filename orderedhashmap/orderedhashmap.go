@@ -6,7 +6,7 @@ import "github.com/thefrost13/gollections/node"
 
 // OrderedHashMap is a generic hash map that maintains the insertion order of key-value pairs.
 // It combines the fast access of a hash map with the ordered iteration of a linked list.
-// The zero value is ready to use but NewOrderedHashMap should be preferred for initialization.
+// The zero value is ready to use but New should be preferred for initialization.
 //
 // Type parameters:
 //   - K: the key type, must be comparable
@@ -25,15 +25,15 @@ type KVPair[K comparable, V any] struct {
 	Value V // the value associated with the key
 }
 
-// NewOrderedHashMap creates and returns a new empty OrderedHashMap.
+// New creates and returns a new empty OrderedHashMap.
 // The returned map is ready to use and will maintain insertion order of key-value pairs.
 //
 // Example:
 //
-//	ohm := NewOrderedHashMap[string, int]()
+//	ohm := New[string, int]()
 //	ohm.Set("first", 1)
 //	ohm.Set("second", 2)
-func NewOrderedHashMap[K comparable, V any]() *OrderedHashMap[K, V] {
+func New[K comparable, V any]() *OrderedHashMap[K, V] {
 	return &OrderedHashMap[K, V]{
 		m: make(map[K]*node.LinkedNode[KVPair[K, V]]),
 	}
